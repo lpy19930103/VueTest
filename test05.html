@@ -3,7 +3,8 @@
 <head>
     <title>Bootstrap 实例</title>
     <meta charset="utf-8">
-    <script src="./lib/vue-2.4.0.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.2.2/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <style>
         body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
             margin: 0;
@@ -141,19 +142,18 @@
             background: #268ef1;
         }
 
-        #content {
+        .content, #page1 {
             margin-top: 20px;
             margin-left: 15%;
             width: 90%;
             float: left;
         }
 
-        #content .home {
+        .content .home {
             background-color: white;
-
         }
 
-        #content .home .homeTitle {
+        .content .home .homeTitle {
             color: #333333;
             font-size: 20px;
             margin-top: 10px;
@@ -245,91 +245,105 @@
         </li>
     </ul>
 
-    <div id="content">
-        <div class="home" v-show="page[0].show">
-            <p class="homeTitle">公司名称</p>
-            <div class="left">
-                <p class="leftTitle">审核进度表</p>
-                <div class="all">
-                    <span style="color: #333333;font-size: 18px">公司注册总人数：</span>
-                    <span style="color: #333333;font-size: 18px">{{statisticsInfo.total}}</span>
-                </div>
-                <div class="all">
-                    <span style="color: #333333;font-size: 15px">已审核：</span>
-                    <span style="color: #333333;font-size: 15px">{{statisticsInfo.audited}}</span>
-                </div>
-                <div class="all">
-                    <span style="color: red;font-size: 15px">未审核：</span>
-                    <span style="color: red;font-size: 15px">{{statisticsInfo.unreviewed}}</span>
-                    <a class="review" href="#">立即审核</a>
-                </div>
-                <div class="all">
-                    <span style="color: #666666;font-size: 15px">已冻结：</span>
-                    <span style="color: #666666;font-size: 15px">{{statisticsInfo.freeze}}</span>
-                </div>
-
-            </div>
-
-            <div class="right">
-                <div class="top">
-                    <div class='topTitle' style="color: #666666;font-size: 14px;">
-                        今日订单数
-                        <div style="color: #333333;font-size: 20px;margin-top: 10px">{{statisticsInfo.orderTotal}}</div>
-                    </div>
-                    <img class='icon' src="images/icon1.png" alt="">
-                </div>
-                <div class="bottom">
-                    <div class='topTitle' style="color: #666666;font-size: 14px;">
-                        今日订单金额
-                        <div style="color: #333333;font-size: 20px;margin-top: 10px">{{statisticsInfo.totalMoney}}</div>
-                    </div>
-                    <img class='icon' src="images/icon1.png" alt="">
-                </div>
-
-            </div>
-        </div>
-        <div class="body" v-show="page[1].show">人员名单</div>
-        <div class="body" v-show="page[2].show">订单汇总</div>
-        <div class="body" v-show="page[3].show">订单详情</div>
+    <div class="content">
+        <component :is="comName"></component>
     </div>
 </div>
+<template id="page2">
+    <div>人员统计</div>
+</template>
+<template id="page3">
+    <div>订单汇总</div>
+</template>
+<template id="page4">
+    <div>订单详情</div>
+</template>
+<template id="page1">
+    <div class="home">
+        <p class="homeTitle">公司名称</p>
+        <div class="left">
+            <p class="leftTitle">审核进度表</p>
+            <div class="all">
+                <span style="color: #333333;font-size: 18px">公司注册总人数：</span>
+                <span style="color: #333333;font-size: 18px">{{statisticsInfo.total}}</span>
+            </div>
+            <div class="all">
+                <span style="color: #333333;font-size: 15px">已审核：</span>
+                <span style="color: #333333;font-size: 15px">{{statisticsInfo.audited}}</span>
+            </div>
+            <div class="all">
+                <span style="color: red;font-size: 15px">未审核：</span>
+                <span style="color: red;font-size: 15px">{{statisticsInfo.unreviewed}}</span>
+                <a class="review" href="#">立即审核</a>
+            </div>
+            <div class="all">
+                <span style="color: #666666;font-size: 15px">已冻结：</span>
+                <span style="color: #666666;font-size: 15px">{{statisticsInfo.freeze}}</span>
+            </div>
 
+        </div>
+        <div class="right">
+            <div class="top">
+                <div class='topTitle' style="color: #666666;font-size: 14px;">
+                    今日订单数
+                    <div style="color: #333333;font-size: 20px;margin-top: 10px">{{statisticsInfo.orderTotal}}</div>
+                </div>
+                <img class='icon' src="images/icon1.png" alt="">
+            </div>
+            <div class="bottom">
+                <div class='topTitle' style="color: #666666;font-size: 14px;">
+                    今日订单金额
+                    <div style="color: #333333;font-size: 20px;margin-top: 10px">{{statisticsInfo.totalMoney}}</div>
+                </div>
+                <img class='icon' src="images/icon1.png" alt="">
+            </div>
+
+        </div>
+    </div>
+</template>
 <script>
-    Vue.directive('hidden', {
-        bind: function (el, binding) {
-            el.style.display = binding.value === 'show' ? 'block' : 'none'
 
-        }, update: (el, binding) => { // inserted 表示被绑定元素插入父节点时调用
-            el.style.display = binding.value === 'show' ? 'block' : 'none'
+
+    Vue.component('page3', {
+        template: '#page3'
+    });
+    Vue.component('page1', {
+        template: '#page1',
+        data: () => {
+            return {
+                statisticsInfo: {
+                    total: 300,
+                    audited: 200,
+                    unreviewed: 50,
+                    freeze: 50,
+                    orderTotal: 10,
+                    totalMoney: 100
+                }
+            }
         }
-
+    });
+    Vue.component('page4', {
+        template: '#page4'
+    });
+    Vue.component('page2', {
+        template: '#page2'
     });
 
     new Vue({
         el: '#container',
         data: {
-            navs: [{text: '首页', isActive: true},
-                {text: '人员名单', isActive: false},
-                {text: '订单汇总', isActive: false},
-                {text: '订单详情', isActive: false},],
-            page: [{show: true}, {show: false}, {show: false},{show: false},],
-            statisticsInfo: {
-                total: 300,
-                audited: 200,
-                unreviewed: 50,
-                freeze: 50,
-                orderTotal: 10,
-                totalMoney: 100
-            }
+            comName: 'page1',
+            navs: [{text: '首页', isActive: true, comName: 'page1'},
+                {text: '人员名单', isActive: false, comName: 'page2'},
+                {text: '订单汇总', isActive: false, comName: 'page3'},
+                {text: '订单详情', isActive: false, comName: 'page4'},],
         },
         methods: {
             navClick: function (index) {
+                this.comName = this.navs[index].comName;
                 this.navs.forEach((data, i) => {
                     data.isActive = (index === i);
                 });
-                this.page.forEach((data, i) => {
-                    data.show = (index === i);
-                })
             }
         },
     });
