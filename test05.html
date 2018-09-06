@@ -87,6 +87,7 @@
             position: absolute;
             height: 60px;
             width: 45px;
+            border-style: none;
             background: url("images/logo.png") no-repeat;
         }
 
@@ -125,7 +126,6 @@
             bottom: 0;
             float: left;
             width: 10%;
-            height: 100%;
             background-color: #30364c;
         }
 
@@ -142,9 +142,9 @@
             background: #268ef1;
         }
 
-        .content, #page1 {
+        .content{
             margin-top: 20px;
-            margin-left: 15%;
+            margin-left: 10%;
             width: 90%;
             float: left;
         }
@@ -223,8 +223,6 @@
             top: 50%;
             position: absolute;
         }
-
-
     </style>
 </head>
 <body>
@@ -244,7 +242,6 @@
             <a style="color: white" href="#">{{item.text}} </a>
         </li>
     </ul>
-
     <div class="content">
         <component :is="comName"></component>
     </div>
